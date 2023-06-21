@@ -1,44 +1,44 @@
-// import logo from './logo.svg';
-// import './App.css';
-import axios from 'axios';
-import { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client';
 
-function Chat() {
-    const [userName, setUserName] = useState("")
-    const [password, setPassword] = useState("")
-    const [email, setEmail] = useState("")
-    let details = {
-        userName: userName,
-        password: password,
-        email: email
-    }
-    let uri = "http://localhost:6650/users/signup"
-    const signup = () => {
-        console.log(details)
+const Chat = () => {
+    const endPoint = 'http://localhost:6650'
+    // const [socket, setSocket] = useState("")
+    const [message, setMessage] = useState("") //state for the message we want to send
+    const [receivedMessage, setReceivedMessage] = useState([]) //state for the message we want to receive
+    let socket = useRef()
+    // console.log(socket)
+    useEffect(() => {
+        // setSocket(io(endPoint))
+        socket.current = io(endPoint)
+        console.log(socket)
+    }, [])
 
-        axios.post(uri, details).then((res) => {
-            console.log(res)
-            alert(res.data.message)
-        }).catch((err) => {
-            console.log(err)
-            // alert(err.response.data.message)
-        })
+    const sendMessage = () => {
+        console.log(message)
+        socket.current.emit("message", message)
     }
+    useEffect(() => {
+        if (receivedMessage) {
+            socket.current.on("broadcast", (message) => {
+                setReceivedMessage([...receivedMessage, message])
+            })
+        }
+    }, [receivedMessage])
     return (
         <>
-            <div className='mx-auto container'>
-                <div className='mx-auto row'>
-                    <div className='mx-auto col-sm-8 shadow-lg py-4'>
-                        <h6 className='display-6 text-muted text-center'>Sign up</h6>
-                        <input placeholder='Username' type="text" className="form-control my-3" onChange={(e) => setUserName(e.target.value)} />
-                        <input placeholder='Email' type="text" className="form-control my-3" onChange={(e) => setEmail(e.target.value)} />
-                        <input placeholder='Password' type="text" className="form-control my-3" onChange={(e) => setPassword(e.target.value)} />
-                        <button className='btn btn-dark' onClick={signup}>Submit</button>
-                    </div>
-                </div>
+            <h1>React Chat Chat</h1>
+            <div className="messages">
+                {
+                    receivedMessage.map((message, i) => (
+                        <p key={i}>{message}</p>
+                    ))
+                }
+                <input type='text' onChange={(e) => setMessage(e.target.value)} />
+                <button onClick={sendMessage}>Send chat</button>
             </div>
-        </>
-    );
-}
 
+        </>
+    )
+}
 export default Chat;
