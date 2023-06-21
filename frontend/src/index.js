@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.css"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './pages/signin';
 import Dashboard from './pages/dashboard';
+import Chats from './pages/chats';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,9 +15,10 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App/>}/>
-        <Route path='/signin' element={<SignIn/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/' element={<App />} />
+        <Route path='/signin' element={<SignIn />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/chats' element={<Chats />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -1,8 +1,10 @@
 const express = require("express")
 const { signup, signIn, verifyUserToken, imageUpload } = require("../controllers/userController")
+const { validate } = require("../middlewares/validator")
+const { userValidationSchema } = require("../middlewares/userValidator")
 const userRouter = express.Router()
 
-userRouter.post("/signup", signup)
+userRouter.post("/signup", validate(userValidationSchema), signup)
 userRouter.post("/login", signIn)
 userRouter.get("/verify", verifyUserToken)
 userRouter.post("/upload", imageUpload)

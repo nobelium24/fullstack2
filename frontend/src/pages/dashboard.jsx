@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
-    const uri = "http://localhost:6660/users/verify"
+    const uri = "http://localhost:6650/users/verify"
     const token = localStorage.getItem("token")
     const navigate = useNavigate()
     setInterval(useEffect(() => {
